@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form id="uploadFiles" method="POST" enctype="multipart/form-data">
+    <fieldset>
+        <label>
+            Upload Name
+            <input required name="uploadName" type="text"/>
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <label>
+            Files
+            <input required name="files" type="file" multiple onchange="editFileNames(this);"/>
+        </label>
+
+    </fieldset>
+
+    <fieldset id="filesToBeUploaded"></fieldset>
+
+    <div>
+        <fieldset id="tagPlaceholder"> </fieldset>
+
+        <input type="button" onclick="addTag();" value="Add Tag"/>
+    </div>
+    <div>
+        <fieldset id="albumPlaceholder"> </fieldset>
+
+    </div>
+    <fieldset>
+        <label>
+            Please wait for confirmation:
+            <input type="submit"/>
+        </label>
+    </fieldset>
+</form>
+
+
+<script type="text/javascript" src="../js/json2.js"></script>
+<script type="text/javascript" src="upload.js"></script>
+</body>
+</html>

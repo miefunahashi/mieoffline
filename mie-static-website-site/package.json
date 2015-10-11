@@ -1,0 +1,23 @@
+{
+  "name": "mieoffline.com",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "gulp-clean": "gulp clean",
+    "gulp-compile": "gulp compile",
+    "npm-clean": "npm-clean",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {
+    "del": "^2.0.2",
+    "gulp": "^3.9.0",
+    "gulp-data": "^1.2.0",
+    "gulp-debug": "^2.1.0",
+    "gulp-mustache": "^1.1.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.0.4"
+  }
+}

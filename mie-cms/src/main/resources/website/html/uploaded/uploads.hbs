@@ -1,0 +1,38 @@
+<div>
+    {{#uploads}}
+        <div>
+            <h1>Http Headers</h1>
+        {{#each httpHeaders}}
+            <div>
+                <strong>{{@key}}: </strong>{{this}}
+            </div>
+        {{/each}}
+            <h1>Properties</h1>
+        {{#each properties}}
+
+            <div>
+                <strong>{{@key}}: </strong>{{this}}
+            </div>
+        {{/each}}
+            <h1>Parts</h1>
+        {{#each uploadParts}}
+            <div><strong>Filename: </strong>{{filename}}</div>
+            <div><strong>Content Type: </strong>{{contentType}}</div>
+            <div><strong>Size: </strong>{{size}}</div>
+            <div><strong>File Headers: </strong>
+                {{#each fileHeaders}}
+                    <strong>{{@key}}: </strong>{{this}}
+                {{/each}}
+            </div>
+            <div>
+                <strong>Upload ID: </strong>
+                {{referenceToFileUploadRequestMissingData}}
+                <a download="{{filename}}" href="../../../raw/{{referenceToFileUploadRequestMissingData}}">Download</a>
+                {{#if isImage}}
+                    <img src="../../../raw/{{referenceToFileUploadRequestMissingData}}"/>
+                {{/if}}
+            </div>
+        {{/each}}
+        </div>
+    {{/uploads}}
+</div>

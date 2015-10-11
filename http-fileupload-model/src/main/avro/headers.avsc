@@ -1,0 +1,11 @@
+{
+  "namespace": "com.mieoffline.http.fileuploadrepository.model",
+  "type": "record",
+  "name": "Headers",
+  "fields": [{
+      "name" : "headers",
+      "type" : {"type": "map",
+      "values" : {"type" : "array", "items" : "string"}}
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+Package: [[name]]
+Version: [[version]]
+Section: misc
+Priority: optional
+Architecture: all
+Depends: openjdk-8-jdk
+Maintainer: Mark Richards
+Description: Mie website
+Distribution: development

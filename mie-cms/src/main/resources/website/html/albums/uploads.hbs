@@ -1,0 +1,14 @@
+<div>
+    {{#albums}}
+        <h2>{{name}}</h2>
+        <p>{{description}}</p>
+    {{/albums}}
+</div>
+<form id="addAlbum" method="post" >
+
+    <label >Name: <input type="text" name="name"></label>
+    <label >Description: <input type="text" name="description"></label>
+
+
+</form>
+<input type="button" onclick="sendData();" value="Add album">

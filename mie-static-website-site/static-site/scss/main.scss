@@ -1,0 +1,173 @@
+html {
+	background-color: #FFFFFF;
+	color: #808080;
+        width: 100%;
+        font-size: 1em;
+        font-weight:100;
+        font-family: roboto;
+}
+nav {
+    background-color: #FFFFFF;
+}
+body {
+    width: 100%;
+    background-color: #f1f3f4;
+}
+div.hr{
+    border: none;
+    width: 30%;
+    background-color:#FDFF53;
+    color:#FDFF53;
+    height: 3px;   
+}
+hr.border{
+    border: 0;
+    width: 30%;
+    background-color:#808080;
+    color:#FDFF53;
+    height: 2px;
+}
+div.footer{
+    background-color: #FFFFFF
+}
+a {
+    font-size: 1em; 
+    color: #808080 ;
+    text-decoration: none;
+    font-weight:600;
+}
+h1 {
+    font-size: 1.3em;
+    color: #808080 ;
+    text-decoration: none;
+}
+h3{
+    font-size: 1em;
+    
+}
+h4{
+    font-weight:100;
+    font-size: 1em;
+    line-height:140%;
+    
+}
+p  { 
+    font-size: 0.9em;
+    line-height:150%;
+    color: #808080 ;
+    text-decoration: none;
+   
+}
+li  {
+    font-size: 1em;
+    color: #808080 ;
+    text-decoration: none;
+}
+a:hover {
+    color: #ffc0cb;
+}
+
+a:visited {
+    color:#808080 ;
+}
+
+a:visited:hover {
+    color: #ffc0cb;
+}
+a.nav-selected {
+    color: #ffc0cb;
+}
+
+.title-column {
+    background-color: #ededcd
+}
+
+.mie-work-nav {
+    background-color: #C0C1C3
+}
+
+.image-thumbnails-container-3 {
+    width: 100%;
+    display:  block;
+    float: left;
+}
+
+
+.image-thumbnail {
+    position: relative;
+    width: 33.3%;
+    float: left;
+    display: inline-block;
+}
+
+image-thumbnail:hover {
+    opacity:0.6;
+    text-align:justify;
+    color:#129FEA;
+    
+}
+
+.image-thumbnail-with-margin {
+    width: 96%;
+    margin-bottom: 3.75%;    
+}
+
+.image-thumbnail:nth-child(3n+0) > .image-thumbnail-with-margin {
+    margin-left: 4%;
+}
+.image-thumbnail:nth-child(3n+2) > .image-thumbnail-with-margin {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+.image-thumbnail:nth-child(3n+1) > .image-thumbnail-with-margin {
+    margin-right: 4%;
+}
+.image-thumbnail-with-margin * {
+    width: 100%;
+    height: 100%;
+}
+.overlay-container {
+  position:relative;
+  display: inline-block;
+
+}
+.overlay-top { 
+  position:absolute;
+  opacity: 1;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: inherit;
+  height: inherit;
+  text-align: center;
+  box-sizing: border-box;
+}
+.overlay-top > * {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  color:#808080;
+  text-align:center;
+  height:auto;
+  
+}
+.overlay-top:hover {
+  background: rgba(255,255,255,1);
+  opacity: 1;
+}
+
+.overlay-bottom {
+  width: 100%;
+ 
+  opacity:1;
+  top: 0;
+  left: 0;
+}
+.overlay-bottom {
+  width: 100%;
+ 
+  opacity:1;
+  top: 0;
+  left: 0;
+}

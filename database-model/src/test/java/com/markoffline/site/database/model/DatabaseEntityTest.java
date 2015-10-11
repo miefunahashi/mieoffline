@@ -1,0 +1,50 @@
+package com.markoffline.site.database.model;
+
+import com.mieoffline.site.Value;
+import org.junit.Test;
+
+import static com.mieoffline.site.ValueTest.assertVEquals;
+import static com.mieoffline.site.ValueTest.assertVNotEquals;
+
+public class DatabaseEntityTest {
+    public static final DatabaseEntity<String, String> DATABASE_ENTITY_EXAMPLE = databaseEntityExample();
+    public static final String OBJECT_EXAMPLE = "OBJECT_EXAMPLE";
+
+    private static DatabaseEntity<String, String> databaseEntityExample() {
+        try {
+            return new DatabaseEntity.Builder<String, String>()
+                    .setDatabaseReference(DatabaseReferenceTest.DATABASE_REFERENCE_EXAMPLE)
+                    .setObject(OBJECT_EXAMPLE)
+                    .build();
+        } catch (Value.BuilderIncompleteException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Test
+    public void testEquality() throws Value.BuilderIncompleteException {
+        assertVEquals(DATABASE_ENTITY_EXAMPLE);
+    }
+
+    @Test(expected = Value.BuilderIncompleteException.class)
+    public void testNullReference() throws Value.BuilderIncompleteException {
+        DATABASE_ENTITY_EXAMPLE.asBuilder().setDatabaseReference(null).build();
+    }
+
+    @Test(expected = Value.BuilderIncompleteException.class)
+    public void testNullObject() throws Value.BuilderIncompleteException {
+        DATABASE_ENTITY_EXAMPLE.asBuilder().setObject(null).build();
+    }
+
+    @Test
+    public void testDifferent() throws Value.BuilderIncompleteException {
+        assertVNotEquals(
+                DATABASE_ENTITY_EXAMPLE,
+                DATABASE_ENTITY_EXAMPLE.asBuilder()
+                        .setDatabaseReference(DatabaseReferenceTest.DATABASE_REFERENCE_EXAMPLE.asBuilder()
+                                .setReference("OTHER").build()).build());
+        assertVNotEquals(
+                DATABASE_ENTITY_EXAMPLE,
+                DATABASE_ENTITY_EXAMPLE.asBuilder().setObject("OTHER").build());
+    }
+}
