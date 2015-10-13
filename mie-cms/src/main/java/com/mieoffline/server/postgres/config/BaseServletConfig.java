@@ -9,10 +9,7 @@ import com.mieoffline.http.fileupload.repository.postgres.Utils;
 import com.mieoffline.http.fileuploadrepository.model.AvroDecoder;
 import com.mieoffline.http.fileuploadrepository.model.Headers;
 import com.mieoffline.server.postgres.MapFromNodeToJsonString;
-import com.mieoffline.server.postgres.controllers.base.AlbumsRootController;
-import com.mieoffline.server.postgres.controllers.base.HtmlDefaultFileTypeMap;
-import com.mieoffline.server.postgres.controllers.base.Raw;
-import com.mieoffline.server.postgres.controllers.base.Web;
+import com.mieoffline.server.postgres.controllers.base.*;
 import com.mieoffline.server.services.BaseServlet;
 import com.mieoffline.server.services.HttpServletRequestResponseWrapper;
 import com.mieoffline.server.services.HttpServletRequestResponseWrapperRouter;
@@ -47,6 +44,7 @@ public class BaseServletConfig implements Function<IDatabase, BaseServlet, BaseS
         } catch (AlbumsRootController.AlbumsException e) {
             throw new BaseServletException("Error setting up album controller", e);
         }
+
         return new BaseServlet(new HttpServletRequestResponseWrapperRouter(
                 ImmutableSortedMap.<String, Consumer<HttpServletRequestResponseWrapper, ?>>of(
                         "web", webController,
@@ -59,9 +57,6 @@ public class BaseServletConfig implements Function<IDatabase, BaseServlet, BaseS
 
     public static class BaseServletException extends Exception {
 
-        /**
-		 * 
-		 */
 		private static final long serialVersionUID = -8958754470046051284L;
 
 		public BaseServletException(String s, Exception e) {

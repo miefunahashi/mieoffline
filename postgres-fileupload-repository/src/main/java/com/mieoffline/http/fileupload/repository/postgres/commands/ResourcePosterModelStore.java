@@ -3,7 +3,6 @@ package com.mieoffline.http.fileupload.repository.postgres.commands;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.markoffline.site.database.model.DatabaseReference;
 import com.markoffline.site.database.model.IDatabase;
 import com.mieoffline.functional.Consumer;
 import com.mieoffline.functional.Function;
@@ -33,22 +32,17 @@ public class ResourcePosterModelStore implements Consumer<ResourcePosterModel, T
     }
 
 
-    public ImmutableList<FileUpload<String>> getSimpleFiles(
+    public ImmutableList<FileUpload> getSimpleFiles(
             Long idMultipartFormUploadRequestMissingFiles,
             final ImmutableList<PartCached> partsToStore) throws ResourcePosterModelStoreException {
-        DatabaseReference<String> build;
-        try {
-            build = new DatabaseReference.Builder<String>().setReference(Long.toString(idMultipartFormUploadRequestMissingFiles)).build();
-        } catch (Value.BuilderIncompleteException e) {
-            throw new ResourcePosterModelStoreException("Unable to build database reference", e);
-        }
-        final ImmutableList.Builder<FileUpload<String>> simpleFileBuilder = ImmutableList.builder();
+
+        final ImmutableList.Builder<FileUpload> simpleFileBuilder = ImmutableList.builder();
         for (PartCached part : partsToStore) {
             try {
-                simpleFileBuilder.add(new FileUpload.Builder<String>()
+                simpleFileBuilder.add(new FileUpload.Builder()
                         .setFilename(part.getAlternativeFileName())
                         .setContentType(part.getContentType())
-                        .setReferenceToFileUploadRequestMissingData(build)
+                        .setReferenceToFileUploadRequestMissingData(idMultipartFormUploadRequestMissingFiles)
                         .setName(part.getName())
                         .setSize(part.getSize())
                         .setData(part.getData())
@@ -97,18 +91,18 @@ public class ResourcePosterModelStore implements Consumer<ResourcePosterModel, T
 
     public static class ResourcePosterModelStoreException extends Exception {
         /**
-		 * 
-		 */
-		private static final long serialVersionUID = -2253872128799992671L;
+         *
+         */
+        private static final long serialVersionUID = -2253872128799992671L;
 
-		public ResourcePosterModelStoreException(String s, Exception e) {
+        public ResourcePosterModelStoreException(String s, Exception e) {
             super(s, e);
         }
     }
 
-    public void storeParts(ImmutableList<FileUpload<String>> simpleFiles, Long multipartFileUploadRequestThingy, Connection conn, final ImmutableSet<Long> albumReferences) throws Throwable {
+    public void storeParts(ImmutableList<FileUpload> simpleFiles, Long multipartFileUploadRequestThingy, Connection conn, final ImmutableSet<Long> albumReferences) throws Throwable {
 
-        for (final FileUpload<String> simpleFile : simpleFiles) {
+        for (final FileUpload simpleFile : simpleFiles) {
             final FileUploadPartRepositoryStoreModel fileUploadPartRepositoryStoreModel = new FileUploadPartRepositoryStoreModel.Builder()
                     .setDatabaseFile(simpleFile)
                     .setFileUploadRequestId(multipartFileUploadRequestThingy)

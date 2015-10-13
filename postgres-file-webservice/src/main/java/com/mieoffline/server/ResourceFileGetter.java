@@ -15,9 +15,9 @@ import java.io.IOException;
 import java.util.Map;
 
 public class ResourceFileGetter implements Consumer<PathWithHttpServleResponse, ResourceFileGetter.ResourceFileGetterException> {
-    private final Function<String, FileUploadWithMultipartFormUploadRequestMissingFiles<Long>, ?> getFileUploadWithMultipartFormUploadRequestMissingFiles;
+    private final Function<String, FileUploadWithMultipartFormUploadRequestMissingFiles, ?> getFileUploadWithMultipartFormUploadRequestMissingFiles;
 
-    public ResourceFileGetter(Function<String, FileUploadWithMultipartFormUploadRequestMissingFiles<Long>, ?> getFileUploadWithMultipartFormUploadRequestMissingFiles) {
+    public ResourceFileGetter(Function<String, FileUploadWithMultipartFormUploadRequestMissingFiles, ?> getFileUploadWithMultipartFormUploadRequestMissingFiles) {
         this.getFileUploadWithMultipartFormUploadRequestMissingFiles = getFileUploadWithMultipartFormUploadRequestMissingFiles;
     }
 
@@ -25,9 +25,9 @@ public class ResourceFileGetter implements Consumer<PathWithHttpServleResponse, 
     public Void apply(PathWithHttpServleResponse pathWithHttpServleResponse) throws ResourceFileGetterException {
         final String pathRemaining = pathWithHttpServleResponse.getPath();
         final HttpServletResponse httpServletResponse = pathWithHttpServleResponse.getHttpServletResponse();
-        final FileUpload<Long> simpleFile;
+        final FileUpload simpleFile;
         final MultipartFormUploadRequestMissingFiles multipartFormUploadRequestMissingFiles;
-        final FileUploadWithMultipartFormUploadRequestMissingFiles<Long> fileUploadWithMultipartFormUploadRequestMissingFiles;
+        final FileUploadWithMultipartFormUploadRequestMissingFiles fileUploadWithMultipartFormUploadRequestMissingFiles;
         try {
             fileUploadWithMultipartFormUploadRequestMissingFiles = this.getFileUploadWithMultipartFormUploadRequestMissingFiles.apply(pathRemaining);
         } catch (Throwable e) {
@@ -61,7 +61,7 @@ public class ResourceFileGetter implements Consumer<PathWithHttpServleResponse, 
         }
         try {
             @SuppressWarnings("resource")
-			final ServletOutputStream outputStream = httpServletResponse.getOutputStream();
+            final ServletOutputStream outputStream = httpServletResponse.getOutputStream();
             IOUtils.write(simpleFile.getData(), outputStream);
             outputStream.flush();
         } catch (IOException e) {
@@ -73,11 +73,11 @@ public class ResourceFileGetter implements Consumer<PathWithHttpServleResponse, 
     public static class ResourceFileGetterException extends Exception {
 
         /**
-		 * 
-		 */
-		private static final long serialVersionUID = -7297748037220125864L;
+         *
+         */
+        private static final long serialVersionUID = -7297748037220125864L;
 
-		public ResourceFileGetterException(String s, Throwable e) {
+        public ResourceFileGetterException(String s, Throwable e) {
             super(s, e);
         }
     }

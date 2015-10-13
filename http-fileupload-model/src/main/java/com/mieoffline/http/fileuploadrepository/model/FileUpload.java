@@ -2,7 +2,6 @@ package com.mieoffline.http.fileuploadrepository.model;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.markoffline.site.database.model.DatabaseReference;
 import com.mieoffline.site.Value;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -11,7 +10,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class FileUpload<DATA_TYPE extends Serializable> implements Serializable, Value<FileUpload.Builder<DATA_TYPE>, FileUpload<DATA_TYPE>> {
+public final class FileUpload implements Serializable, Value<FileUpload.Builder, FileUpload> {
     public static final String NAME_FIELD = "name";
     private static final long serialVersionUID = 6112291091320356965L;
     public static final String REFERENCE_TO_FILE_UPLOAD_REQUEST_MISSING_DATA_FIELD = "referenceToFileUploadRequestMissingData";
@@ -26,12 +25,12 @@ public final class FileUpload<DATA_TYPE extends Serializable> implements Seriali
     private final Optional<String> name;
     private final Optional<Long> size;
     private final ImmutableMap<String, ImmutableList<String>> fileHeaders;
-    private final DatabaseReference<DATA_TYPE> referenceToFileUploadRequestMissingData;
+    private final Long fileUploadId;
 
-    public FileUpload(Builder<DATA_TYPE> builder) {
+    public FileUpload(Builder builder) {
         this.filename = builder.filename;
         this.data = builder.data;
-        this.referenceToFileUploadRequestMissingData = builder.referenceToFileUploadRequestMissingData;
+        this.fileUploadId = builder.fileUploadId;
         this.contentType = Optional.ofNullable(builder.contentType);
         this.name = Optional.ofNullable(builder.name);
         this.size = Optional.ofNullable(builder.size);
@@ -67,18 +66,15 @@ public final class FileUpload<DATA_TYPE extends Serializable> implements Seriali
         return this.fileHeaders;
     }
 
-    public DatabaseReference<DATA_TYPE> getReferenceToFileUploadRequestMissingData() {
-        return this.referenceToFileUploadRequestMissingData;
+
+    @Override
+    public Builder newBuilder() {
+        return new Builder();
     }
 
     @Override
-    public Builder<DATA_TYPE> newBuilder() {
-        return new Builder<>();
-    }
-
-    @Override
-    public Builder<DATA_TYPE> asBuilder() {
-        return new Builder<>(this);
+    public Builder asBuilder() {
+        return new Builder(this);
     }
 
     @Override
@@ -86,7 +82,7 @@ public final class FileUpload<DATA_TYPE extends Serializable> implements Seriali
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FileUpload<?> that = (FileUpload<?>) o;
+        FileUpload that = (FileUpload) o;
 
         return new EqualsBuilder()
                 .append(this.data, that.data)
@@ -95,15 +91,19 @@ public final class FileUpload<DATA_TYPE extends Serializable> implements Seriali
                 .append(this.name, that.name)
                 .append(this.size, that.size)
                 .append(this.fileHeaders, that.fileHeaders)
-                .append(this.referenceToFileUploadRequestMissingData, that.referenceToFileUploadRequestMissingData)
+                .append(this.fileUploadId, that.fileUploadId)
                 .build();
 
 
     }
 
+    public Long getFileUploadId() {
+        return fileUploadId;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(this.data, this.filename, this.contentType, this.name, this.size, this.fileHeaders, this.referenceToFileUploadRequestMissingData);
+        return Objects.hash(this.data, this.filename, this.contentType, this.name, this.size, this.fileHeaders, this.fileUploadId);
 
     }
 
@@ -117,11 +117,11 @@ public final class FileUpload<DATA_TYPE extends Serializable> implements Seriali
                 NAME_FIELD, this.name,
                 SIZE_FIELD, this.size,
                 FILE_HEADERS_FIELD, this.fileHeaders,
-                REFERENCE_TO_FILE_UPLOAD_REQUEST_MISSING_DATA_FIELD, this.referenceToFileUploadRequestMissingData);
+                REFERENCE_TO_FILE_UPLOAD_REQUEST_MISSING_DATA_FIELD, this.fileUploadId);
     }
 
-    public static class Builder<DATA_TYPE extends Serializable> implements Value.Builder<FileUpload<DATA_TYPE>, Builder<DATA_TYPE>> {
-        private DatabaseReference<DATA_TYPE> referenceToFileUploadRequestMissingData;
+    public static class Builder implements Value.Builder<FileUpload, Builder> {
+        private Long fileUploadId;
         private String filename;
         private byte[] data;
         private String contentType;
@@ -132,57 +132,58 @@ public final class FileUpload<DATA_TYPE extends Serializable> implements Seriali
         public Builder() {
         }
 
-        public Builder(FileUpload<DATA_TYPE> databaseFile) {
+
+        public Builder(FileUpload databaseFile) {
             this.filename = databaseFile.filename;
             this.data = databaseFile.data;
             this.contentType = databaseFile.contentType.orElse(null);
             this.name = databaseFile.name.orElse(null);
             this.size = databaseFile.size.orElse(null);
             this.fileHeaders = databaseFile.fileHeaders;
-            this.referenceToFileUploadRequestMissingData = databaseFile.referenceToFileUploadRequestMissingData;
+            this.fileUploadId = databaseFile.fileUploadId;
 
         }
 
-        public Builder<DATA_TYPE> setContentType(String contentType) {
+        public Builder setContentType(String contentType) {
             this.contentType = contentType;
             return this;
         }
 
-        public Builder<DATA_TYPE> setName(String name) {
+        public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder<DATA_TYPE> setSize(Long size) {
+        public Builder setSize(Long size) {
             this.size = size;
             return this;
         }
 
-        public Builder<DATA_TYPE> setFilename(String filename) {
+        public Builder setFilename(String filename) {
             this.filename = filename;
             return this;
         }
 
 
-        public Builder<DATA_TYPE> setData(byte[] data) {
+        public Builder setData(byte[] data) {
             this.data = data;
             return this;
         }
 
-        public Builder<DATA_TYPE> setFileHeaders(ImmutableMap<String, ImmutableList<String>> fileHeaders) {
+        public Builder setFileHeaders(ImmutableMap<String, ImmutableList<String>> fileHeaders) {
             this.fileHeaders = fileHeaders;
             return this;
         }
 
-        public Builder<DATA_TYPE> setReferenceToFileUploadRequestMissingData(DatabaseReference<DATA_TYPE> referenceToFileUploadRequestMissingData) {
-            this.referenceToFileUploadRequestMissingData = referenceToFileUploadRequestMissingData;
+        public Builder setReferenceToFileUploadRequestMissingData(final Long fileUploadId) {
+            this.fileUploadId = fileUploadId;
             return this;
         }
 
         @Override
-		public FileUpload<DATA_TYPE> build() throws BuilderIncompleteException {
+        public FileUpload build() throws BuilderIncompleteException {
 
-            final FileUpload<DATA_TYPE> fileUpload = new FileUpload<>(this);
+            final FileUpload fileUpload = new FileUpload(this);
             if (fileUpload.data == null) {
                 throw BuilderIncompleteException.exception(DATA_FIELD);
             }
@@ -201,7 +202,7 @@ public final class FileUpload<DATA_TYPE extends Serializable> implements Seriali
             if (fileUpload.fileHeaders == null) {
                 throw BuilderIncompleteException.exception(FILE_HEADERS_FIELD);
             }
-            if (fileUpload.referenceToFileUploadRequestMissingData == null) {
+            if (fileUpload.fileUploadId == null) {
                 throw BuilderIncompleteException.exception(REFERENCE_TO_FILE_UPLOAD_REQUEST_MISSING_DATA_FIELD);
             }
             return fileUpload;

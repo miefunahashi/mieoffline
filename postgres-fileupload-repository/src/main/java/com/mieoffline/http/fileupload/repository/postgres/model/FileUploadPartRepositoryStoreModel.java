@@ -6,9 +6,9 @@ import com.mieoffline.site.Value;
 import static com.mieoffline.http.fileupload.repository.postgres.constants.FileUploadPartConstants.*;
 
 public class FileUploadPartRepositoryStoreModel implements Value<FileUploadPartRepositoryStoreModel.Builder, FileUploadPartRepositoryStoreModel> {
- 
-	private static final long serialVersionUID = 7609974540461638215L;
-	public final static String STORE_QUERY = String.format("INSERT INTO %s(" +
+
+    private static final long serialVersionUID = 7609974540461638215L;
+    public final static String STORE_QUERY = String.format("INSERT INTO %s(" +
                     "%s," +
                     "%s," +
                     "%s," +
@@ -24,7 +24,7 @@ public class FileUploadPartRepositoryStoreModel implements Value<FileUploadPartR
             NAME_COLUMN,
             SIZE_COLUMN,
             FILE_HEADERS_COLUMN);
-    private final FileUpload<String> databaseFile;
+    private final FileUpload databaseFile;
     private final Long fileUploadRequestId;
 
     public FileUploadPartRepositoryStoreModel(Builder builder) {
@@ -32,7 +32,7 @@ public class FileUploadPartRepositoryStoreModel implements Value<FileUploadPartR
         this.fileUploadRequestId = builder.fileUploadRequestId;
     }
 
-    public FileUpload<String> getDatabaseFile() {
+    public FileUpload getDatabaseFile() {
         return this.databaseFile;
     }
 
@@ -51,7 +51,7 @@ public class FileUploadPartRepositoryStoreModel implements Value<FileUploadPartR
     }
 
     public static class Builder implements Value.Builder<FileUploadPartRepositoryStoreModel, Builder> {
-        private FileUpload<String> databaseFile;
+        private FileUpload databaseFile;
         private Long fileUploadRequestId;
 
         public Builder(FileUploadPartRepositoryStoreModel fileUploadPartRepositoryStoreModel) {
@@ -63,7 +63,7 @@ public class FileUploadPartRepositoryStoreModel implements Value<FileUploadPartR
 
         }
 
-        public Builder setDatabaseFile(FileUpload<String> databaseFile) {
+        public Builder setDatabaseFile(FileUpload databaseFile) {
             this.databaseFile = databaseFile;
             return this;
         }

@@ -26,7 +26,6 @@ public class MieCMS {
 	public static void main(String args[]) throws MyApplicationException {
 
 		try (final BoneCP config = new BoneCPConnectionPoolSupplier().apply(null)) {
-
 			try (final Database connectionSupplier = new Database(config)) {
 				deleteExistingTables(connectionSupplier);
 				createNewTables(connectionSupplier);

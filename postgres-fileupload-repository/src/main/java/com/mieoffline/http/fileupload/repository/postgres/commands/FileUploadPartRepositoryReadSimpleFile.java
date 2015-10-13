@@ -1,6 +1,5 @@
 package com.mieoffline.http.fileupload.repository.postgres.commands;
 
-import com.markoffline.site.database.model.DatabaseReference;
 import com.mieoffline.functional.Producer;
 import com.mieoffline.http.fileupload.repository.postgres.SQLUtils;
 import com.mieoffline.http.fileupload.repository.postgres.Utils;
@@ -15,7 +14,7 @@ import java.sql.ResultSet;
 
 import static com.mieoffline.http.fileupload.repository.postgres.constants.FileUploadPartConstants.*;
 
-public class FileUploadPartRepositoryReadSimpleFile implements Producer<DatabaseQueryDefinition<Long, FileUpload<Long>>, Throwable> {
+public class FileUploadPartRepositoryReadSimpleFile implements Producer<DatabaseQueryDefinition<Long, FileUpload>, Throwable> {
     private final AvroDecoder<Headers> headersAvroHelper;
     private final Utils utils;
     private final SQLUtils sqlUtils;
@@ -26,11 +25,11 @@ public class FileUploadPartRepositoryReadSimpleFile implements Producer<Database
         this.sqlUtils = sqlUtils;
     }
 
-    private FileUpload<Long> getFileUpload(byte[] headers, String fileName, byte[] content, String name, String size, String contentType, DatabaseReference<Long> build, Headers objectFromBytes) throws FileUploadPartRepositoryReadSimpleFileException {
-        final FileUpload<Long> fileUpload;
+    private FileUpload getFileUpload(byte[] headers, String fileName, byte[] content, String name, String size, String contentType, Long fileUploadId, Headers objectFromBytes) throws FileUploadPartRepositoryReadSimpleFileException {
+        final FileUpload fileUpload;
         try {
-            fileUpload = new FileUpload.Builder<Long>()
-                    .setReferenceToFileUploadRequestMissingData(build)
+            fileUpload = new FileUpload.Builder()
+                    .setReferenceToFileUploadRequestMissingData(fileUploadId)
                     .setFilename(fileName)
                     .setData(content)
                     .setName(name)
@@ -54,19 +53,10 @@ public class FileUploadPartRepositoryReadSimpleFile implements Producer<Database
         return objectFromBytes;
     }
 
-    private DatabaseReference<Long> getLongDatabaseReference(long fileUploadId) throws FileUploadPartRepositoryReadSimpleFileException {
-        final DatabaseReference<Long> build;
-        try {
-            build = new DatabaseReference.Builder<Long>().setReference(fileUploadId).build();
-        } catch (Value.BuilderIncompleteException e) {
-            throw new FileUploadPartRepositoryReadSimpleFileException("Couldn't build database reference", e);
-        }
-        return build;
-    }
 
     @Override
-    public DatabaseQueryDefinition<Long, FileUpload<Long>> apply(Void aVoid) throws Throwable {
-        return new DatabaseQueryDefinition.Builder<Long, FileUpload<Long>>()
+    public DatabaseQueryDefinition<Long, FileUpload> apply(Void aVoid) throws Throwable {
+        return new DatabaseQueryDefinition.Builder<Long, FileUpload>()
                 .setFunction(longPreparedStatementWithQueryAndFunction -> {
                     final PreparedStatement ps = longPreparedStatementWithQueryAndFunction.getPreparedStatement();
                     ps.setLong(1, longPreparedStatementWithQueryAndFunction.getT());
@@ -80,13 +70,11 @@ public class FileUploadPartRepositoryReadSimpleFile implements Producer<Database
                             final String name = result.getString(NAME_COLUMN);
                             final String size = result.getString(SIZE_COLUMN);
                             final String contentType = result.getString(CONTENT_TYPE_COLUMN);
-                            final DatabaseReference<Long> build = getLongDatabaseReference(fileUploadId);
                             final Headers objectFromBytes = getHeaders(headers);
-                            final FileUpload<Long> fileUpload = getFileUpload(headers, fileName, content, name, size, contentType, build, objectFromBytes);
+                            final FileUpload fileUpload = getFileUpload(headers, fileName, content, name, size, contentType, fileUploadId, objectFromBytes);
                             return fileUpload;
                         }
-						throw new FileUploadPartRepositoryReadSimpleFileException("No result");
-
+                        throw new FileUploadPartRepositoryReadSimpleFileException("No result");
                     }
                 })
                 .setQuery(ReadGivenIdModel.READ_GIVEN_ID)
@@ -97,11 +85,11 @@ public class FileUploadPartRepositoryReadSimpleFile implements Producer<Database
     public static class FileUploadPartRepositoryReadSimpleFileException extends Exception {
 
         /**
-		 * 
-		 */
-		private static final long serialVersionUID = -2011532991907421799L;
+         *
+         */
+        private static final long serialVersionUID = -2011532991907421799L;
 
-		public FileUploadPartRepositoryReadSimpleFileException(String s, Exception e) {
+        public FileUploadPartRepositoryReadSimpleFileException(String s, Exception e) {
             super(s, e);
         }
 

@@ -5,25 +5,24 @@ import com.mieoffline.http.fileuploadrepository.model.MultipartFormUploadRequest
 import com.mieoffline.site.Value;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import java.io.Serializable;
 import java.util.Objects;
 
-public class FileUploadWithMultipartFormUploadRequestMissingFiles<T extends Serializable> implements Value<FileUploadWithMultipartFormUploadRequestMissingFiles.Builder<T>,FileUploadWithMultipartFormUploadRequestMissingFiles<T>> {
+public class FileUploadWithMultipartFormUploadRequestMissingFiles implements Value<FileUploadWithMultipartFormUploadRequestMissingFiles.Builder, FileUploadWithMultipartFormUploadRequestMissingFiles> {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 8146157868815913189L;
-	public static final String MULTIPART_FORM_UPLOAD_REQUEST_MISSING_FILES_FIELD = "multipartFormUploadRequestMissingFiles";
+     *
+     */
+    private static final long serialVersionUID = 8146157868815913189L;
+    public static final String MULTIPART_FORM_UPLOAD_REQUEST_MISSING_FILES_FIELD = "multipartFormUploadRequestMissingFiles";
     public static final String FILE_UPLOAD_FIELD = "fileUpload";
-    private final FileUpload<T> fileUpload;
+    private final FileUpload fileUpload;
     private final MultipartFormUploadRequestMissingFiles multipartFormUploadRequestMissingFiles;
 
-    public FileUploadWithMultipartFormUploadRequestMissingFiles(Builder<T> builder) {
+    public FileUploadWithMultipartFormUploadRequestMissingFiles(Builder builder) {
         this.fileUpload = builder.fileUpload;
         this.multipartFormUploadRequestMissingFiles = builder.multipartFormUploadRequestMissingFiles;
     }
 
-    public FileUpload<T> getFileUpload() {
+    public FileUpload getFileUpload() {
         return this.fileUpload;
     }
 
@@ -36,16 +35,16 @@ public class FileUploadWithMultipartFormUploadRequestMissingFiles<T extends Seri
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FileUploadWithMultipartFormUploadRequestMissingFiles<?> that = (FileUploadWithMultipartFormUploadRequestMissingFiles<?>) o;
+        FileUploadWithMultipartFormUploadRequestMissingFiles that = (FileUploadWithMultipartFormUploadRequestMissingFiles) o;
         return new EqualsBuilder()
                 .append(this.fileUpload, that.fileUpload)
-                .append(this.multipartFormUploadRequestMissingFiles,that.multipartFormUploadRequestMissingFiles)
+                .append(this.multipartFormUploadRequestMissingFiles, that.multipartFormUploadRequestMissingFiles)
                 .build();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.fileUpload,this.multipartFormUploadRequestMissingFiles);
+        return Objects.hash(this.fileUpload, this.multipartFormUploadRequestMissingFiles);
     }
 
     @Override
@@ -54,43 +53,45 @@ public class FileUploadWithMultipartFormUploadRequestMissingFiles<T extends Seri
     }
 
     @Override
-    public Builder<T> newBuilder() {
-        return new Builder<>();
+    public Builder newBuilder() {
+        return new Builder();
     }
 
     @Override
-    public Builder<T> asBuilder() {
-        return new Builder<>(this);
+    public Builder asBuilder() {
+        return new Builder(this);
     }
 
-    public static class Builder<T extends Serializable> implements Value.Builder<FileUploadWithMultipartFormUploadRequestMissingFiles<T>,FileUploadWithMultipartFormUploadRequestMissingFiles.Builder<T>> {
-        private FileUpload<T> fileUpload;
-        private  MultipartFormUploadRequestMissingFiles multipartFormUploadRequestMissingFiles;
+    public static class Builder implements Value.Builder<FileUploadWithMultipartFormUploadRequestMissingFiles, FileUploadWithMultipartFormUploadRequestMissingFiles.Builder> {
+        private FileUpload fileUpload;
+        private MultipartFormUploadRequestMissingFiles multipartFormUploadRequestMissingFiles;
+
         public Builder() {
 
         }
-        public Builder(FileUploadWithMultipartFormUploadRequestMissingFiles<T> fileUploadWithMultipartFormUploadRequestMissingFiles) {
+
+        public Builder(FileUploadWithMultipartFormUploadRequestMissingFiles fileUploadWithMultipartFormUploadRequestMissingFiles) {
             this.fileUpload = fileUploadWithMultipartFormUploadRequestMissingFiles.fileUpload;
             this.multipartFormUploadRequestMissingFiles = fileUploadWithMultipartFormUploadRequestMissingFiles.multipartFormUploadRequestMissingFiles;
         }
 
-        public Builder<T> setFileUpload(FileUpload<T> fileUpload) {
+        public Builder setFileUpload(FileUpload fileUpload) {
             this.fileUpload = fileUpload;
             return this;
         }
 
-        public Builder<T> setMultipartFormUploadRequestMissingFiles(MultipartFormUploadRequestMissingFiles multipartFormUploadRequestMissingFiles) {
+        public Builder setMultipartFormUploadRequestMissingFiles(MultipartFormUploadRequestMissingFiles multipartFormUploadRequestMissingFiles) {
             this.multipartFormUploadRequestMissingFiles = multipartFormUploadRequestMissingFiles;
             return this;
         }
 
         @Override
-        public FileUploadWithMultipartFormUploadRequestMissingFiles<T> build() throws BuilderIncompleteException {
-            FileUploadWithMultipartFormUploadRequestMissingFiles<T> fileUploadWithMultipartFormUploadRequestMissingFiles = new FileUploadWithMultipartFormUploadRequestMissingFiles<>(this);
-            if(fileUploadWithMultipartFormUploadRequestMissingFiles.fileUpload == null) {
+        public FileUploadWithMultipartFormUploadRequestMissingFiles build() throws BuilderIncompleteException {
+            FileUploadWithMultipartFormUploadRequestMissingFiles fileUploadWithMultipartFormUploadRequestMissingFiles = new FileUploadWithMultipartFormUploadRequestMissingFiles(this);
+            if (fileUploadWithMultipartFormUploadRequestMissingFiles.fileUpload == null) {
                 BuilderIncompleteException.exception(FILE_UPLOAD_FIELD);
             }
-            if(fileUploadWithMultipartFormUploadRequestMissingFiles.multipartFormUploadRequestMissingFiles == null) {
+            if (fileUploadWithMultipartFormUploadRequestMissingFiles.multipartFormUploadRequestMissingFiles == null) {
                 BuilderIncompleteException.exception(MULTIPART_FORM_UPLOAD_REQUEST_MISSING_FILES_FIELD);
             }
             return fileUploadWithMultipartFormUploadRequestMissingFiles;
