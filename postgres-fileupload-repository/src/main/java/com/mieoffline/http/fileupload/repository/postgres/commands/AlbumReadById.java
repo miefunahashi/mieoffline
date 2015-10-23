@@ -1,7 +1,6 @@
 package com.mieoffline.http.fileupload.repository.postgres.commands;
 
 import com.markoffline.site.database.model.DatabaseEntity;
-import com.markoffline.site.database.model.DatabaseReference;
 import com.mieoffline.functional.Function;
 import com.mieoffline.functional.Producer;
 import com.mieoffline.http.fileupload.repository.postgres.model.Album;
@@ -12,7 +11,7 @@ import java.sql.ResultSet;
 
 import static com.mieoffline.http.fileupload.repository.postgres.constants.AlbumConstants.*;
 
-public class AlbumReadById implements Producer<DatabaseQueryDefinition<Long, DatabaseEntity<Long, Album>>, Throwable> {
+public class AlbumReadById implements Producer<DatabaseQueryDefinition<Long, DatabaseEntity<Album>>, Throwable> {
 
     private final static String READ_GIVEN_ID =
             String.format(
@@ -27,21 +26,19 @@ public class AlbumReadById implements Producer<DatabaseQueryDefinition<Long, Dat
 
 
     @Override
-    public DatabaseQueryDefinition<Long, DatabaseEntity<Long, Album>> apply(Void aVoid) throws Throwable {
-        return new DatabaseQueryDefinition.Builder<Long, DatabaseEntity<Long, Album>>()
-                .setFunction(new Function<DatabaseFunctionQuery.PreparedStatementWithQueryAndFunction<Long>, DatabaseEntity<Long, Album>, Throwable>() {
+    public DatabaseQueryDefinition<Long, DatabaseEntity<Album>> apply(Void aVoid) throws Throwable {
+        return new DatabaseQueryDefinition.Builder<Long, DatabaseEntity<Album>>()
+                .setFunction(new Function<DatabaseFunctionQuery.PreparedStatementWithQueryAndFunction<Long>, DatabaseEntity<Album>, Throwable>() {
                     @Override
-                    public DatabaseEntity<Long, Album> apply(DatabaseFunctionQuery.PreparedStatementWithQueryAndFunction<Long> longPreparedStatementWithQueryAndFunction) throws Throwable {
+                    public DatabaseEntity<Album> apply(DatabaseFunctionQuery.PreparedStatementWithQueryAndFunction<Long> longPreparedStatementWithQueryAndFunction) throws Throwable {
                         final PreparedStatement ps = longPreparedStatementWithQueryAndFunction.getPreparedStatement();
                         ps.setLong(1, longPreparedStatementWithQueryAndFunction.getT());
                         try (ResultSet result = ps.executeQuery()) {
                             if (result.next()) {
 
                                 try {
-                                    return new DatabaseEntity.Builder<Long, Album>()
-                                            .setDatabaseReference(
-                                                    new DatabaseReference.Builder<Long>().setReference(
-                                                            result.getLong(ID_COLUMN)).build())
+                                    return new DatabaseEntity.Builder<Album>()
+                                            .setDatabaseReference(result.getLong(ID_COLUMN))
                                             .setObject(new Album.Builder()
                                                     .setDecription(result.getString(DESCRIPTION_COLUMN))
                                                     .setName(result.getString(NAME_COLUMN))
@@ -53,7 +50,7 @@ public class AlbumReadById implements Producer<DatabaseQueryDefinition<Long, Dat
                                 }
 
                             }
-							throw new AlbumReadByIdException("No result found");
+                            throw new AlbumReadByIdException("No result found");
                         }
                     }
                 })
@@ -63,11 +60,11 @@ public class AlbumReadById implements Producer<DatabaseQueryDefinition<Long, Dat
 
     public static class AlbumReadByIdException extends Exception {
         /**
-		 * 
-		 */
-		private static final long serialVersionUID = 6609043421884863978L;
+         *
+         */
+        private static final long serialVersionUID = 6609043421884863978L;
 
-		public AlbumReadByIdException(String s, Exception e) {
+        public AlbumReadByIdException(String s, Exception e) {
             super(s, e);
         }
 

@@ -3,7 +3,6 @@ package com.mieoffline.server.postgres.controllers.base;
 import com.google.common.collect.ImmutableList;
 import com.markoffline.site.database.model.IDatabase;
 import com.mieoffline.functional.Consumer;
-import com.mieoffline.functional.Function;
 import com.mieoffline.functional.Producer;
 import com.mieoffline.http.fileupload.repository.postgres.*;
 import com.mieoffline.http.fileupload.repository.postgres.commands.*;
@@ -69,13 +68,13 @@ public class Raw implements Producer<Consumer<HttpServletRequestResponseWrapper,
         }
 
         final FileUploadPartRepositoryReadSimpleFiles fileUploadPartRepositoryReadSimpleFiles = new FileUploadPartRepositoryReadSimpleFiles(this.utils, this.headersAvroDecoder);
-        final DatabaseQueryDefinition<Long, ImmutableList<FileUploadWithoutData<Long>>> fileUploadPartRepositoryReadQueryDef;
+        final DatabaseQueryDefinition<Long, ImmutableList<FileUploadWithoutData>> fileUploadPartRepositoryReadQueryDef;
         try {
             fileUploadPartRepositoryReadQueryDef = fileUploadPartRepositoryReadSimpleFiles.apply(null);
         } catch (Throwable throwable) {
             throw new IllegalStateException("Whatever", throwable);
         }
-        final DatabaseFunctionQuery<Long, ImmutableList<FileUploadWithoutData<Long>>> fileUploadPartRepositoryReadSimpleFilesFunc = new DatabaseFunctionQuery<>(this.iDatabase, fileUploadPartRepositoryReadQueryDef);
+        final DatabaseFunctionQuery<Long, ImmutableList<FileUploadWithoutData>> fileUploadPartRepositoryReadSimpleFilesFunc = new DatabaseFunctionQuery<>(this.iDatabase, fileUploadPartRepositoryReadQueryDef);
 
 
         final FileUploadWithoutDataToUploadParts fileUploadWithoutDataToUploadParts = new FileUploadWithoutDataToUploadParts();

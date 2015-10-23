@@ -9,10 +9,10 @@ import com.mieoffline.json.MapToStringJson;
 import com.mieoffline.json.ObjectMapper;
 
 public class AlbumsAsStringJsonProducer implements Producer<String, AlbumsAsStringJsonProducer.BasicAlbumGetterException> {
-    final Function<Void, ImmutableSet<DatabaseEntity<Long, Album>>, ?> readAllAlbumsWithReferences;
-    final MapToStringJson<ImmutableSet<DatabaseEntity<Long, Album>>> albumsMapToStringJson;
+    final Function<Void, ImmutableSet<DatabaseEntity<Album>>, ?> readAllAlbumsWithReferences;
+    final MapToStringJson<ImmutableSet<DatabaseEntity<Album>>> albumsMapToStringJson;
 
-    public AlbumsAsStringJsonProducer(Function<Void, ImmutableSet<DatabaseEntity<Long, Album>>, ?> readAllAlbumsWithReferences, MapToStringJson<ImmutableSet<DatabaseEntity<Long, Album>>> albumsMapToStringJson) {
+    public AlbumsAsStringJsonProducer(Function<Void, ImmutableSet<DatabaseEntity<Album>>, ?> readAllAlbumsWithReferences, MapToStringJson<ImmutableSet<DatabaseEntity<Album>>> albumsMapToStringJson) {
         this.readAllAlbumsWithReferences = readAllAlbumsWithReferences;
         this.albumsMapToStringJson = albumsMapToStringJson;
     }
@@ -20,7 +20,7 @@ public class AlbumsAsStringJsonProducer implements Producer<String, AlbumsAsStri
 
     @Override
     public String apply(Void avoid) throws BasicAlbumGetterException {
-        final ImmutableSet<DatabaseEntity<Long, Album>> albumsSet;
+        final ImmutableSet<DatabaseEntity<Album>> albumsSet;
         try {
             albumsSet = this.readAllAlbumsWithReferences.apply(null);
         } catch (Throwable e) {
@@ -38,11 +38,11 @@ public class AlbumsAsStringJsonProducer implements Producer<String, AlbumsAsStri
     public static class BasicAlbumGetterException extends Exception {
 
         /**
-		 * 
-		 */
-		private static final long serialVersionUID = 7752251791549721031L;
+         *
+         */
+        private static final long serialVersionUID = 7752251791549721031L;
 
-		public BasicAlbumGetterException(String s, Throwable e) {
+        public BasicAlbumGetterException(String s, Throwable e) {
             super(s, e);
         }
     }

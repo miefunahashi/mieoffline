@@ -7,13 +7,14 @@ import static com.mieoffline.site.ValueTest.assertVEquals;
 import static com.mieoffline.site.ValueTest.assertVNotEquals;
 
 public class DatabaseEntityTest {
-    public static final DatabaseEntity<String, String> DATABASE_ENTITY_EXAMPLE = databaseEntityExample();
+    private static final Long DATABASE_REFERENCE_EXAMPLE = Long.valueOf("DATABASE_REFERENCE_EXAMPLE".hashCode());
+    public static final DatabaseEntity<String> DATABASE_ENTITY_EXAMPLE = databaseEntityExample();
     public static final String OBJECT_EXAMPLE = "OBJECT_EXAMPLE";
 
-    private static DatabaseEntity<String, String> databaseEntityExample() {
+    private static DatabaseEntity<String> databaseEntityExample() {
         try {
-            return new DatabaseEntity.Builder<String, String>()
-                    .setDatabaseReference(DatabaseReferenceTest.DATABASE_REFERENCE_EXAMPLE)
+            return new DatabaseEntity.Builder<String>()
+                    .setDatabaseReference(DATABASE_REFERENCE_EXAMPLE)
                     .setObject(OBJECT_EXAMPLE)
                     .build();
         } catch (Value.BuilderIncompleteException e) {
@@ -41,8 +42,7 @@ public class DatabaseEntityTest {
         assertVNotEquals(
                 DATABASE_ENTITY_EXAMPLE,
                 DATABASE_ENTITY_EXAMPLE.asBuilder()
-                        .setDatabaseReference(DatabaseReferenceTest.DATABASE_REFERENCE_EXAMPLE.asBuilder()
-                                .setReference("OTHER").build()).build());
+                        .setDatabaseReference(DATABASE_REFERENCE_EXAMPLE + 1L).build());
         assertVNotEquals(
                 DATABASE_ENTITY_EXAMPLE,
                 DATABASE_ENTITY_EXAMPLE.asBuilder().setObject("OTHER").build());

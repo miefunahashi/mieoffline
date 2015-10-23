@@ -1,19 +1,17 @@
 package com.mieoffline.http.fileupload.repository.postgres.commands;
 
 import com.google.common.collect.ImmutableSet;
-import com.markoffline.site.database.model.DatabaseReference;
 import com.mieoffline.functional.Function;
 import com.mieoffline.functional.Producer;
 import com.mieoffline.http.fileupload.repository.postgres.SQLUtils;
 import com.mieoffline.http.fileupload.repository.postgres.model.AlbumItemRepositoryReadGivenIdModel;
-import com.mieoffline.site.Value;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import static com.mieoffline.http.fileupload.repository.postgres.constants.AlbumItemConstants.FILE_UPLOAD_KEY_COLUMN;
 
-public class AlbumItemsListAll implements Producer<DatabaseQueryDefinition<String, ImmutableSet<DatabaseReference<Long>>>, Throwable> {
+public class AlbumItemsListAll implements Producer<DatabaseQueryDefinition<String, ImmutableSet<Long>>, Throwable> {
 
     private final SQLUtils sqlUtils;
 
@@ -23,24 +21,20 @@ public class AlbumItemsListAll implements Producer<DatabaseQueryDefinition<Strin
 
 
     @Override
-    public DatabaseQueryDefinition<String, ImmutableSet<DatabaseReference<Long>>> apply(Void aVoid) throws Throwable {
-        return new DatabaseQueryDefinition.Builder<String, ImmutableSet<DatabaseReference<Long>>>()
+    public DatabaseQueryDefinition<String, ImmutableSet<Long>> apply(Void aVoid) throws Throwable {
+        return new DatabaseQueryDefinition.Builder<String, ImmutableSet<Long>>()
                 .setQuery(AlbumItemRepositoryReadGivenIdModel.READ_ALL_ITEMS_FOR_ALBUM_NAME)
-                .setFunction(new Function<DatabaseFunctionQuery.PreparedStatementWithQueryAndFunction<String>, ImmutableSet<DatabaseReference<Long>>, Throwable>() {
+                .setFunction(new Function<DatabaseFunctionQuery.PreparedStatementWithQueryAndFunction<String>, ImmutableSet<Long>, Throwable>() {
                     @Override
-                    public ImmutableSet<DatabaseReference<Long>> apply(DatabaseFunctionQuery.PreparedStatementWithQueryAndFunction<String> stringPreparedStatementWithQueryAndFunction) throws Throwable {
+                    public ImmutableSet<Long> apply(DatabaseFunctionQuery.PreparedStatementWithQueryAndFunction<String> stringPreparedStatementWithQueryAndFunction) throws Throwable {
                         final PreparedStatement ps = stringPreparedStatementWithQueryAndFunction.getPreparedStatement();
                         final String longConnectionWithModel = stringPreparedStatementWithQueryAndFunction.getT();
                         ps.setString(1, longConnectionWithModel);
                         try (final ResultSet result = ps.executeQuery()) {
-                            final ImmutableSet.Builder<DatabaseReference<Long>> databaseReferenceImmutableSet = ImmutableSet.builder();
+                            final ImmutableSet.Builder<Long> databaseReferenceImmutableSet = ImmutableSet.builder();
                             while (AlbumItemsListAll.this.sqlUtils.isNext(result)) {
                                 final Long fileUploadWithoutDataKey = result.getLong(FILE_UPLOAD_KEY_COLUMN);
-                                try {
-                                    databaseReferenceImmutableSet.add(new DatabaseReference.Builder<Long>().setReference(fileUploadWithoutDataKey).build());
-                                } catch (Value.BuilderIncompleteException e) {
-                                    throw new AlbumItemsListAllException("Unable to find the album item", e);
-                                }
+                                databaseReferenceImmutableSet.add(fileUploadWithoutDataKey);
                             }
                             return databaseReferenceImmutableSet.build();
                         }
@@ -53,11 +47,11 @@ public class AlbumItemsListAll implements Producer<DatabaseQueryDefinition<Strin
     public static class AlbumItemsListAllException extends Exception {
 
         /**
-		 * 
-		 */
-		private static final long serialVersionUID = 4405956787405687157L;
+         *
+         */
+        private static final long serialVersionUID = 4405956787405687157L;
 
-		public AlbumItemsListAllException(String s, Exception e) {
+        public AlbumItemsListAllException(String s, Exception e) {
             super(s, e);
         }
 

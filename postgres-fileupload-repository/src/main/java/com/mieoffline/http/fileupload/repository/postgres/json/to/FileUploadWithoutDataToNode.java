@@ -14,9 +14,9 @@ import com.mieoffline.json.ObjectMapper;
 import java.util.Map;
 import java.util.Optional;
 
-public class FileUploadWithoutDataToNode implements MapToNode<FileUploadWithoutData<Long>> {
+public class FileUploadWithoutDataToNode implements MapToNode<FileUploadWithoutData> {
     @Override
-    public Node apply(FileUploadWithoutData<Long> fileUpload) throws ObjectMapper.MappingException {
+    public Node apply(FileUploadWithoutData fileUpload) throws ObjectMapper.MappingException {
 
 
         final ImmutableMap.Builder<String, Node> builder = ImmutableMap.<String, Node>builder();
@@ -43,7 +43,7 @@ public class FileUploadWithoutDataToNode implements MapToNode<FileUploadWithoutD
         if(name.isPresent()) {
             builder.put("name", new Node(name.get()));
         }
-        builder.put("id", new Node(String.valueOf(fileUpload.getReferenceToUpload().getReference())));
+        builder.put("id", new Node(String.valueOf(fileUpload.getReferenceToUpload())));
 
         final Optional<Long> size = fileUpload.getSize();
         if(size.isPresent()) {

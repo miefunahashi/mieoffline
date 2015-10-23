@@ -1,7 +1,6 @@
 package com.mieoffline.http.fileupload.repository.postgres.commands;
 
 import com.google.common.collect.ImmutableList;
-import com.markoffline.site.database.model.DatabaseReference;
 import com.mieoffline.functional.Producer;
 import com.mieoffline.http.fileupload.repository.postgres.Utils;
 import com.mieoffline.http.fileupload.repository.postgres.model.FindWithoutDataByFileUploadIdModel;
@@ -16,7 +15,7 @@ import java.sql.SQLException;
 
 import static com.mieoffline.http.fileupload.repository.postgres.constants.FileUploadPartConstants.*;
 
-public class FileUploadPartRepositoryReadSimpleFiles implements Producer<DatabaseQueryDefinition<Long, ImmutableList<FileUploadWithoutData<Long>>>, Throwable> {
+public class FileUploadPartRepositoryReadSimpleFiles implements Producer<DatabaseQueryDefinition<Long, ImmutableList<FileUploadWithoutData>>, Throwable> {
 
     private final Utils utils;
     private final AvroDecoder<Headers> headersAvroHelper;
@@ -46,25 +45,16 @@ public class FileUploadPartRepositoryReadSimpleFiles implements Producer<Databas
         return objectFromBytes;
     }
 
-    private DatabaseReference<Long> getLongDatabaseReference(long id) throws FileUploadPartRepositoryReadSimpleFilesException {
-        final DatabaseReference<Long> build;
-        try {
-            build = new DatabaseReference.Builder<Long>().setReference(id).build();
-        } catch (Value.BuilderIncompleteException e) {
-            throw new FileUploadPartRepositoryReadSimpleFilesException("Unable to build Database Reference", e);
-        }
-        return build;
-    }
 
     @Override
-    public DatabaseQueryDefinition<Long, ImmutableList<FileUploadWithoutData<Long>>> apply(Void aVoid) throws Throwable {
-        return new DatabaseQueryDefinition.Builder<Long, ImmutableList<FileUploadWithoutData<Long>>>()
+    public DatabaseQueryDefinition<Long, ImmutableList<FileUploadWithoutData>> apply(Void aVoid) throws Throwable {
+        return new DatabaseQueryDefinition.Builder<Long, ImmutableList<FileUploadWithoutData>>()
                 .setQuery(FindWithoutDataByFileUploadIdModel.FIND_WITHOUT_DATA_BY_FILE_UPLOAD_ID)
                 .setFunction(longPreparedStatementWithQueryAndFunction -> {
                     final PreparedStatement ps = longPreparedStatementWithQueryAndFunction.getPreparedStatement();
 
                     ps.setLong(1, longPreparedStatementWithQueryAndFunction.getT());
-                    final ImmutableList.Builder<FileUploadWithoutData<Long>> builder = ImmutableList.<FileUploadWithoutData<Long>>builder();
+                    final ImmutableList.Builder<FileUploadWithoutData> builder = ImmutableList.<FileUploadWithoutData>builder();
                     try (final ResultSet result = ps.executeQuery()) {
                         while (isNext(result)) {
                             final long id = result.getLong(ID);
@@ -73,11 +63,10 @@ public class FileUploadPartRepositoryReadSimpleFiles implements Producer<Databas
                             final String name = result.getString(NAME_COLUMN);
                             final String size = result.getString(SIZE_COLUMN);
                             final String contentType = result.getString(CONTENT_TYPE_COLUMN);
-                            final DatabaseReference<Long> build = getLongDatabaseReference(id);
                             final Headers objectFromBytes = getHeaders(headers);
                             try {
-                                builder.add(new FileUploadWithoutData.Builder<Long>()
-                                        .setReferenceToUpload(build)
+                                builder.add(new FileUploadWithoutData.Builder()
+                                        .setReferenceToUpload(id)
                                         .setFilename(filename)
                                         .setName(name)
                                         .setSize(Long.valueOf(size))
@@ -100,11 +89,11 @@ public class FileUploadPartRepositoryReadSimpleFiles implements Producer<Databas
     public static class FileUploadPartRepositoryReadSimpleFilesException extends Exception {
 
         /**
-		 * 
-		 */
-		private static final long serialVersionUID = -8516330969552443303L;
+         *
+         */
+        private static final long serialVersionUID = -8516330969552443303L;
 
-		public FileUploadPartRepositoryReadSimpleFilesException(String s, Exception e) {
+        public FileUploadPartRepositoryReadSimpleFilesException(String s, Exception e) {
             super(s, e);
         }
     }

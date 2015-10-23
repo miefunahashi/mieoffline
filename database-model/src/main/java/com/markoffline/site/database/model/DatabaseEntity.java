@@ -6,22 +6,20 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class DatabaseEntity<KEY_TYPE extends Serializable, OBJECT_TYPE extends Serializable> implements Value<DatabaseEntity.Builder<KEY_TYPE, OBJECT_TYPE>, DatabaseEntity<KEY_TYPE, OBJECT_TYPE>> {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 2500323350409580295L;
-	public static final String DATABASE_REFERENCE_FIELD = "databaseReference";
+public class DatabaseEntity<OBJECT_TYPE extends Serializable> implements Value<DatabaseEntity.Builder<OBJECT_TYPE>, DatabaseEntity<OBJECT_TYPE>> {
+
+    private static final long serialVersionUID = 2500323350409580295L;
+    public static final String DATABASE_REFERENCE_FIELD = "databaseReference";
     public static final String OBJECT_FIELD = "object";
-    private final DatabaseReference<KEY_TYPE> databaseReference;
+    private final Long databaseReference;
     private final OBJECT_TYPE object;
 
-    public DatabaseEntity(Builder<KEY_TYPE, OBJECT_TYPE> builder) {
+    public DatabaseEntity(Builder<OBJECT_TYPE> builder) {
         this.databaseReference = builder.databaseReference;
         this.object = builder.object;
     }
 
-    public DatabaseReference<KEY_TYPE> getDatabaseReference() {
+    public Long getDatabaseReference() {
         return this.databaseReference;
     }
 
@@ -34,7 +32,7 @@ public class DatabaseEntity<KEY_TYPE extends Serializable, OBJECT_TYPE extends S
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DatabaseEntity<?, ?> that = (DatabaseEntity<?, ?>) o;
+        DatabaseEntity<?> that = (DatabaseEntity<?>) o;
         return new EqualsBuilder()
                 .append(this.databaseReference, that.databaseReference)
                 .append(this.object, that.object)
@@ -54,20 +52,20 @@ public class DatabaseEntity<KEY_TYPE extends Serializable, OBJECT_TYPE extends S
     }
 
     @Override
-    public Builder<KEY_TYPE, OBJECT_TYPE> newBuilder() {
+    public Builder<OBJECT_TYPE> newBuilder() {
         return new Builder<>();
     }
 
     @Override
-    public Builder<KEY_TYPE, OBJECT_TYPE> asBuilder() {
+    public Builder<OBJECT_TYPE> asBuilder() {
         return new Builder<>(this);
     }
 
-    public static class Builder<KEY_TYPE extends Serializable, OBJECT_TYPE extends Serializable> implements Value.Builder<DatabaseEntity<KEY_TYPE, OBJECT_TYPE>, DatabaseEntity.Builder<KEY_TYPE, OBJECT_TYPE>> {
-        private DatabaseReference<KEY_TYPE> databaseReference;
+    public static class Builder<OBJECT_TYPE extends Serializable> implements Value.Builder<DatabaseEntity<OBJECT_TYPE>, DatabaseEntity.Builder<OBJECT_TYPE>> {
+        private Long databaseReference;
         private OBJECT_TYPE object;
 
-        public Builder(DatabaseEntity<KEY_TYPE, OBJECT_TYPE> databaseEntity) {
+        public Builder(DatabaseEntity<OBJECT_TYPE> databaseEntity) {
             this.databaseReference = databaseEntity.databaseReference;
             this.object = databaseEntity.object;
         }
@@ -76,19 +74,19 @@ public class DatabaseEntity<KEY_TYPE extends Serializable, OBJECT_TYPE extends S
 
         }
 
-        public Builder<KEY_TYPE, OBJECT_TYPE> setDatabaseReference(DatabaseReference<KEY_TYPE> databaseReference) {
+        public Builder<OBJECT_TYPE> setDatabaseReference(Long databaseReference) {
             this.databaseReference = databaseReference;
             return this;
         }
 
-        public Builder<KEY_TYPE, OBJECT_TYPE> setObject(OBJECT_TYPE object) {
+        public Builder<OBJECT_TYPE> setObject(OBJECT_TYPE object) {
             this.object = object;
             return this;
         }
 
         @Override
-        public DatabaseEntity<KEY_TYPE, OBJECT_TYPE> build() throws BuilderIncompleteException {
-            final DatabaseEntity<KEY_TYPE, OBJECT_TYPE> databaseEntity = new DatabaseEntity<>(this);
+        public DatabaseEntity<OBJECT_TYPE> build() throws BuilderIncompleteException {
+            final DatabaseEntity<OBJECT_TYPE> databaseEntity = new DatabaseEntity<>(this);
             if (databaseEntity.databaseReference == null) {
                 throw BuilderIncompleteException.exception(DATABASE_REFERENCE_FIELD);
             }

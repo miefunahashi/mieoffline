@@ -12,11 +12,11 @@ import com.mieoffline.site.Value;
 
 public class UploadsProducer implements Producer<ImmutableList<Upload>, UploadsProducer.UploadsAsJsonStringProducerException> {
 
-    private final Function<Long, ImmutableList<FileUploadWithoutData<Long>>, ?> fileUploadPartRepositoryReadSimpleFiles;
+    private final Function<Long, ImmutableList<FileUploadWithoutData>, ?> fileUploadPartRepositoryReadSimpleFiles;
     private final DatabaseFunctionQuery<Void, ImmutableList<StringMultipartFormUploadRequestMissingFiles>> fileUploadsReadAll2;
     private final FileUploadWithoutDataToUploadParts fileUploadWithoutDataToUploadParts;
 
-    public UploadsProducer(Function<Long, ImmutableList<FileUploadWithoutData<Long>>, ?> fileUploadPartRepositoryReadSimpleFiles, DatabaseFunctionQuery<Void, ImmutableList<StringMultipartFormUploadRequestMissingFiles>> fileUploadsReadAll2, FileUploadWithoutDataToUploadParts fileUploadWithoutDataToUploadParts) {
+    public UploadsProducer(Function<Long, ImmutableList<FileUploadWithoutData>, ?> fileUploadPartRepositoryReadSimpleFiles, DatabaseFunctionQuery<Void, ImmutableList<StringMultipartFormUploadRequestMissingFiles>> fileUploadsReadAll2, FileUploadWithoutDataToUploadParts fileUploadWithoutDataToUploadParts) {
         this.fileUploadPartRepositoryReadSimpleFiles = fileUploadPartRepositoryReadSimpleFiles;
         this.fileUploadsReadAll2 = fileUploadsReadAll2;
         this.fileUploadWithoutDataToUploadParts = fileUploadWithoutDataToUploadParts;
@@ -35,7 +35,7 @@ public class UploadsProducer implements Producer<ImmutableList<Upload>, UploadsP
         for (StringMultipartFormUploadRequestMissingFiles stringMultipartFormUploadRequestMissingFiles : multipartFormUploadRequestMissingFileses) {
             ImmutableList.Builder<UploadParts> uploadBuilder = ImmutableList.<UploadParts>builder();
             try {
-                for (final FileUploadWithoutData<Long> fileUploadWithoutData : this.fileUploadPartRepositoryReadSimpleFiles.apply(stringMultipartFormUploadRequestMissingFiles.getIdentifier())) {
+                for (final FileUploadWithoutData fileUploadWithoutData : this.fileUploadPartRepositoryReadSimpleFiles.apply(stringMultipartFormUploadRequestMissingFiles.getIdentifier())) {
                     uploadBuilder.add(this.fileUploadWithoutDataToUploadParts.apply(fileUploadWithoutData));
                 }
             } catch (Throwable e) {
@@ -60,11 +60,11 @@ public class UploadsProducer implements Producer<ImmutableList<Upload>, UploadsP
     public static class UploadsAsJsonStringProducerException extends Exception {
 
         /**
-		 * 
-		 */
-		private static final long serialVersionUID = -4822819273603809537L;
+         *
+         */
+        private static final long serialVersionUID = -4822819273603809537L;
 
-		public UploadsAsJsonStringProducerException(String s, Throwable e) {
+        public UploadsAsJsonStringProducerException(String s, Throwable e) {
             super(s, e);
         }
     }
