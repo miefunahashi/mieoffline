@@ -13,11 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>com.mieoffline.static</groupId>
-            <artifactId>postgres-album-repository</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.mieoffline.static</groupId>
-            <artifactId>jackson-mapping-interface</artifactId>
+            <artifactId>json-abstraction</artifactId>
         </dependency>
         <dependency>
             <groupId>com.mieoffline.static</groupId>

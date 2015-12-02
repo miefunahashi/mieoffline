@@ -53,10 +53,7 @@
             <groupId>com.mieoffline.static</groupId>
             <artifactId>postgres-fileupload-repository</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.mieoffline.static</groupId>
-            <artifactId>postgres-album-repository</artifactId>
-        </dependency>
+      
         <dependency>
             <groupId>com.mieoffline.static</groupId>
             <artifactId>postgres-file-webservice</artifactId>
